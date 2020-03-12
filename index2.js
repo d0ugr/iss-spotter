@@ -21,4 +21,7 @@ const printFlyoverTimes = function(flyoverTimes) {
 
 
 nextISSTimesForMyLocation()
-  .then(flyoverTimes => printFlyoverTimes(flyoverTimes));
+  .then(flyoverTimes => printFlyoverTimes(flyoverTimes))
+  .catch((error) => {
+    console.log("It didn't work:", error.message);
+  });

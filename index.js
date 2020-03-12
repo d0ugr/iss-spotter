@@ -25,7 +25,7 @@ nextISSTimesForMyLocation((error, flyoverTimes) => {
   if (!error) {
     printFlyoverTimes(flyoverTimes);
   } else {
-    console.log(`nextISSTimesForMyLocation failed: ${error}`)
+    console.log(`nextISSTimesForMyLocation failed: ${error}`);
   }
 
 });
