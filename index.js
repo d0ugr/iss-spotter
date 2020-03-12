@@ -14,7 +14,7 @@ fetchMyIP((error, ipAddress) => {
     console.log(`Getting coordinates for ${ipAddress}...`);
     fetchCoordsByIP(ipAddress, (error, coords) => {
       if (!error) {
-        console.log(JSON.parse(coords));
+        console.log(coords);
       } else {
         console.log(error);
       }

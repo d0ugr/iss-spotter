@@ -43,7 +43,11 @@ const fetchCoordsByIP = function(ipAddress, callback) {
 
   fetch(`${API_GETCOORDS}${ipAddress}`, (error, body) => {
     if (!error) {
-      callback(null, body);
+      let coords = JSON.parse(body);
+      callback(null, {
+        latitude:  coords.data.latitude,
+        longitude: coords.data.longitude
+      });
     } else {
       callback(Error(`fetchCoordsByIP: fetch failed: ${error}`), null);
     }
