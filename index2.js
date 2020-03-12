@@ -1,4 +1,5 @@
-const { fetchMyIP } = require("./iss-promised.js");
+const { fetchMyIP, fetchCoordsByIP } = require("./iss-promised.js");
 
-fetchMyIP("https://api.ipify.org?format=json")
+fetchMyIP()
+  .then(fetchCoordsByIP)
   .then(body => console.log(body));
