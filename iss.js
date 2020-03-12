@@ -2,6 +2,7 @@ const request = require("request");
 
 const API_IPADDRESS = "https://api.ipify.org?format=json";
 const API_GETCOORDS = "https://ipvigilante.com/";
+const API_FLYOVER   = "http://api.open-notify.org/iss-pass.json";
 
 const fetch = function(url, callback) {
 
@@ -55,5 +56,18 @@ const fetchCoordsByIP = function(ipAddress, callback) {
 
 };
 
+const fetchISSFlyOverTimes = function(coords, callback) {
 
-module.exports = { fetchMyIP, fetchCoordsByIP };
+  fetch(`${API_FLYOVER}?lat=${coords.latitude}&lon=${coords.longitude}`, (error, body) => {
+    if (!error) {
+      callback(null, body);
+    } else {
+      callback(Error(`fetchISSFlyOverTimes: fetch failed: ${error}`), null);
+    }
+  });
+
+};
+
+
+
+module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes };
