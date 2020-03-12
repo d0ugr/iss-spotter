@@ -34,9 +34,16 @@ const fetchMyIP = function(callback) {
 
   fetch(API_IPADDRESS, (error, body) => {
     if (!error) {
-      callback(null, JSON.parse(body).ip);
+      let ipAddress = "";
+      try {
+        ipAddress = JSON.parse(body).ip;
+      } catch {
+        callback(Error(`fetch failed: Response not JSON`), null);
+        return;
+      }
+      callback(null, ipAddress);
     } else {
-      callback(Error(`fetchMyIP: fetch failed: ${error}`), null);
+      callback(Error(`fetch failed: ${error}`), null);
     }
   });
 
@@ -60,7 +67,7 @@ const fetchCoordsByIP = function(ipAddress, callback) {
         longitude: coords.data.longitude
       });
     } else {
-      callback(Error(`fetchCoordsByIP: fetch failed: ${error}`), null);
+      callback(Error(`fetch failed: ${error}`), null);
     }
   });
 
@@ -80,7 +87,7 @@ const fetchISSFlyOverTimes = function(coords, callback) {
     if (!error) {
       callback(null, JSON.parse(body));
     } else {
-      callback(Error(`fetchISSFlyOverTimes: fetch failed: ${error}`), null);
+      callback(Error(`fetch failed: ${error}`), null);
     }
   });
 
@@ -108,15 +115,15 @@ const nextISSTimesForMyLocation = function(callback) {
             if (!error) {
               callback(null, result.response);
             } else {
-              console.log(error);
+              callback(`fetchISSFlyOverTimes failed: ${error}`);
             }
           });
         } else {
-          console.log(error);
+          callback(`fetchCoordsByIP failed: ${error}`);
         }
       });
     } else {
-      console.log("fetchMyIP failed:", error);
+      callback(`fetchMyIP failed: ${error}`);
     }
   });
 
