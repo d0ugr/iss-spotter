@@ -17,10 +17,10 @@ const fetchMyIP = function(callback) {
       if (response.statusCode === 200) {
         callback(null, body);
       } else {
-        callback(`request.statusCode: ${response && response.statusCode}`, null);
+        callback(Error(`request.statusCode: ${response && response.statusCode}`), null);
       }
     } else {
-      callback(`request error: ${error}`, null);
+      callback(Error(`request error: ${error}`), null);
     }
   });
 
