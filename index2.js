@@ -1,8 +1,24 @@
 // index2.js
 
-const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes } = require("./iss-promised.js");
+const { nextISSTimesForMyLocation } = require("./iss-promised.js");
 
-fetchMyIP()
-  .then(fetchCoordsByIP)
-  .then(fetchISSFlyOverTimes)
-  .then(body => console.log(body));
+
+
+const unixTimestampToDate = function(timestamp) {
+
+  return new Date(timestamp * 1000);
+
+};
+
+const printFlyoverTimes = function(flyoverTimes) {
+
+  for (const flyover of flyoverTimes) {
+    console.log(`Next pass at ${unixTimestampToDate(flyover.risetime)} for ${flyover.duration} seconds`);
+  }
+
+};
+
+
+
+nextISSTimesForMyLocation()
+  .then(flyoverTimes => printFlyoverTimes(flyoverTimes));
