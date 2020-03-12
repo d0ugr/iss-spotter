@@ -6,12 +6,6 @@ const API_FLYOVER   = "http://api.open-notify.org/iss-pass.json";
 
 
 
-const unixTimestampToDate = function(timestamp) {
-
-  return new Date(timestamp * 1000);
-
-}
-
 const fetch = function(url, callback) {
 
   request(url, (error, response, body) => {
@@ -101,7 +95,7 @@ const fetchISSFlyOverTimes = function(coords, callback) {
  *   - The fly-over times as an array (null if error):
  *     [ { risetime: <number>, duration: <number> }, ... ]
  */
-const nextISSTimesForMyLocation = function() {
+const nextISSTimesForMyLocation = function(callback) {
 
   console.log("Getting IP address...");
   fetchMyIP((error, ipAddress) => {
@@ -109,12 +103,10 @@ const nextISSTimesForMyLocation = function() {
       console.log(`Getting coordinates for ${ipAddress}...`);
       fetchCoordsByIP(ipAddress, (error, coords) => {
         if (!error) {
-          console.log(`Getting flyover times ${coords}...`);
+          console.log(`Getting flyover times ${JSON.stringify(coords)}...`);
           fetchISSFlyOverTimes(coords, (error, result) => {
             if (!error) {
-              for (const flyover of result.response) {
-                console.log(`Next pass at ${unixTimestampToDate(flyover.risetime)} for ${flyover.duration} seconds`);
-              }
+              callback(null, result.response);
             } else {
               console.log(error);
             }
