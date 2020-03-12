@@ -40,6 +40,14 @@ const fetchMyIP = function(callback) {
 
 };
 
+/**
+ * Makes a single API request to retrieve the coordinates of a given IP address.
+ * Input:
+ *   - A callback (to pass back an error or the coordinates)
+ * Returns (via Callback):
+ *   - An error, if any (nullable)
+ *   - The coordinates as an object (null if error). Example: "{ latitude: '43.84860', longitude: '-79.26170' }"
+ */
 const fetchCoordsByIP = function(ipAddress, callback) {
 
   fetch(`${API_GETCOORDS}${ipAddress}`, (error, body) => {
@@ -56,11 +64,19 @@ const fetchCoordsByIP = function(ipAddress, callback) {
 
 };
 
+/**
+ * Makes a single API request to retrieve estimated ISS flyover times given coordinates of a location on Earth.
+ * Input:
+ *   - A callback (to pass back an error or the coordinates)
+ * Returns (via Callback):
+ *   - An error, if any (nullable)
+ *   - The flyover times as an object (null if error).
+ */
 const fetchISSFlyOverTimes = function(coords, callback) {
 
   fetch(`${API_FLYOVER}?lat=${coords.latitude}&lon=${coords.longitude}`, (error, body) => {
     if (!error) {
-      callback(null, body);
+      callback(null, JSON.parse(body));
     } else {
       callback(Error(`fetchISSFlyOverTimes: fetch failed: ${error}`), null);
     }
