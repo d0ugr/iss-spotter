@@ -1,5 +1,9 @@
 const { fetchMyIP } = require("./iss");
 
 fetchMyIP((error, ipAddress) => {
-  console.log(ipAddress);
+  if (!error) {
+    console.log(ipAddress);
+  } else {
+    console.log("fetchMyIP failed:", error);
+  }
 });
