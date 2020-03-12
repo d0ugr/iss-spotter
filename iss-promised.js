@@ -1,4 +1,5 @@
 // iss_promised.js
+
 const request = require("request-promise-native");
 
 const fetchMyIP = function() {
@@ -14,4 +15,11 @@ const fetchCoordsByIP = function(body) {
 
 };
 
-module.exports = { fetchMyIP, fetchCoordsByIP };
+const fetchISSFlyOverTimes = function(body) {
+
+  let coords = JSON.parse(body);
+  return request(`http://api.open-notify.org/iss-pass.json?lat=${coords.data.latitude}&lon=${coords.data.longitude}`);
+
+};
+
+module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes };
