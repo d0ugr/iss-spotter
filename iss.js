@@ -4,6 +4,14 @@ const API_IPADDRESS = "https://api.ipify.org?format=json";
 const API_GETCOORDS = "https://ipvigilante.com/";
 const API_FLYOVER   = "http://api.open-notify.org/iss-pass.json";
 
+
+
+const unixTimestampToDate = function(timestamp) {
+
+  return new Date(timestamp * 1000);
+
+}
+
 const fetch = function(url, callback) {
 
   request(url, (error, response, body) => {
@@ -105,7 +113,7 @@ const nextISSTimesForMyLocation = function() {
           fetchISSFlyOverTimes(coords, (error, result) => {
             if (!error) {
               for (const flyover of result.response) {
-                console.log(flyover);
+                console.log(`Next pass at ${unixTimestampToDate(flyover.risetime)} for ${flyover.duration} seconds`);
               }
             } else {
               console.log(error);
