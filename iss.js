@@ -1,18 +1,11 @@
 const request = require("request");
 
 const API_IPADDRESS = "https://api.ipify.org?format=json";
+const API_GETCOORDS = "https://ipvigilante.com/";
 
-/**
- * Makes a single API request to retrieve the user's IP address.
- * Input:
- *   - A callback (to pass back an error or the IP string)
- * Returns (via Callback):
- *   - An error, if any (nullable)
- *   - The IP address as a string (null if error). Example: "162.245.144.188"
- */
-const fetchMyIP = function(callback) {
+const fetch = function(url, callback) {
 
-  request(API_IPADDRESS, (error, response, body) => {
+  request(url, (error, response, body) => {
     if (!error) {
       if (response.statusCode === 200) {
         callback(null, body);
@@ -26,4 +19,37 @@ const fetchMyIP = function(callback) {
 
 };
 
-module.exports = { fetchMyIP };
+/**
+ * Makes a single API request to retrieve the user's IP address.
+ * Input:
+ *   - A callback (to pass back an error or the IP string)
+ * Returns (via Callback):
+ *   - An error, if any (nullable)
+ *   - The IP address as a string (null if error). Example: "162.245.144.188"
+ */
+const fetchMyIP = function(callback) {
+
+  fetch(API_IPADDRESS, (error, body) => {
+    if (!error) {
+      callback(null, JSON.parse(body).ip);
+    } else {
+      callback(Error(`fetchMyIP: fetch failed: ${error}`), null);
+    }
+  });
+
+};
+
+const fetchCoordsByIP = function(ipAddress, callback) {
+
+  fetch(`${API_GETCOORDS}${ipAddress}`, (error, body) => {
+    if (!error) {
+      callback(null, body);
+    } else {
+      callback(Error(`fetchCoordsByIP: fetch failed: ${error}`), null);
+    }
+  });
+
+};
+
+
+module.exports = { fetchMyIP, fetchCoordsByIP };
